@@ -1,0 +1,15 @@
+.menuItem {
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuItem > span {
+  font-weight: 500;
+  letter-spacing:0.5px;
+  text-transform: uppercase;
+  padding-bottom: 15px;
+  font-size: 15px;
+  padding-left: 10px;
+  cursor: pointer;
+  color:rgb(57, 60, 65);
+}
