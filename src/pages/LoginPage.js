@@ -6,9 +6,8 @@ import Login from '../Login';
 
 function LoginPage() {
   const user = useSelector(selectUser);
-  console.log(user);
 
-  return <>{user ? <Navigate to="/account" replace={false} /> : <Login />}</>;
+  return <>{user ? <Navigate to="/account" /> : <Login />}</>;
 }
 
 export default LoginPage;

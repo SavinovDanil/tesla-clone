@@ -6,14 +6,47 @@ import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import './SignUp.css';
 import ButtonPrimary from './ButtonPrimary.js';
 import ButtonSecondary from './ButtonSecondary.js';
+import { auth } from './firebase';
+import { login } from './features/userSlice';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fistName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const signUp = (e) => {
+    e.preventDefault();
+
+    if (!firstName) {
+      return alert('Please enter a first name!');
+    }
+    if (!lastName) {
+      return alert('Please enter a last name!');
+    }
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userAuth) => {
+        userAuth.user
+          .updateProfile({
+            displayName: firstName,
+          })
+          .then(() => {
+            dispatch(
+              login({
+                email: userAuth.user.email,
+                uid: userAuth.user.uid,
+                displayName: firstName,
+              }),
+            );
+            navigate('/account');
+          });
+      })
+      .catch((err) => alert(err.message));
+  };
 
   return (
     <div className="signup">
@@ -38,7 +71,7 @@ function SignUp() {
           <input
             type="text"
             id="fName"
-            value={fistName}
+            value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <label htmlFor="lName">Last Name</label>
@@ -57,7 +90,7 @@ function SignUp() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <ButtonPrimary name="Create account" type="submit" />
+          <ButtonPrimary name="Create account" type="submit" onClick={signUp} />
         </form>
         <div className="signup__divider">
           <hr /> <span>OR</span> <hr />
